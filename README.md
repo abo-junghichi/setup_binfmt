@@ -19,7 +19,5 @@ and
 [the RISC-V RV32 file-tree from diskimage of TinyEMU by Fabrice Bellard](https://bellard.org/tinyemu/)
 on Gentoo Linux.
 
-It is not tested for OpenRISC 1000 (ork1).
-
 Amoung ARM instruction set family, only ARMv7a is tested.
 It appears this ISA needs additionanl argument "-B 0x1000" to qemu.
