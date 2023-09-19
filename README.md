@@ -14,10 +14,7 @@ See
 
 ## Tested environments
 These scripts are tested using
-[stage3 file-trees from Gentoo Linux](https://www.gentoo.org/downloads/)
-and
-[the RISC-V RV32 file-tree from diskimage of TinyEMU by Fabrice Bellard](https://bellard.org/tinyemu/)
-on Gentoo Linux.
+[stage3 file-trees from Gentoo Linux](https://www.gentoo.org/downloads/).
 
 Amoung ARM instruction set family, only ARMv7a is tested.
 It appears this ISA needs additionanl argument "-B 0x1000" to qemu.
