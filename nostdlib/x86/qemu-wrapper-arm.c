@@ -1,9 +1,39 @@
 #include <asm/unistd.h>
+#define FAST_SYSCALL
+#ifdef FAST_SYSCALL
+#include <elf.h>
+#include <stddef.h>
+#endif
 static long syscall3(long syscall, long arg1, long arg2, long arg3)
 {
     long ret;
-    __asm__ volatile ("int $0x80":"=a" (ret):"a"(syscall), "b"(arg1),
-		      "c"(arg2), "d"(arg3):"memory");
+#ifdef FAST_SYSCALL
+    void *__kernel_vsyscall = NULL;
+#define Syscall_core "call *%1"
+#define Syscall_entry "g"(__kernel_vsyscall)
+/*
+The Definitive Guide to Linux System Calls | Packagecloud Blog
+https://blog.packagecloud.io/the-definitive-guide-to-linux-system-calls/
+The Linux kernel: System Calls
+https://www.win.tue.nl/~aeb/linux/lk/lk-4.html
+*/
+    {
+	Elf32_auxv_t *auxv;
+	char **wenvp = arg3;
+	while (*wenvp++ != NULL);
+	for (auxv = (Elf32_auxv_t *) wenvp; AT_NULL != auxv->a_type;
+	     auxv++)
+	    if (AT_SYSINFO == auxv->a_type) {
+		__kernel_vsyscall = auxv->a_un.a_val;
+		break;
+	    }
+    }
+#else
+#define Syscall_core "int $0x80"
+#define Syscall_entry "i"(0)
+#endif
+    __asm__ volatile (Syscall_core:"=a"(ret):Syscall_entry, "a"(syscall),
+		      "b"(arg1), "c"(arg2), "d"(arg3):"memory");
     return ret;
 }
 __attribute__((noreturn))
