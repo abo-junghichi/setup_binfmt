@@ -1,6 +1,6 @@
 #!/bin/sh
 STEM=qemu-wrapper-arm
-CC="gcc -Os -Wall -pedantic -Wextra -Wstrict-aliasing=1 \
+CC="gcc -O3 -Wall -pedantic -Wextra -Wstrict-aliasing=1 \
 	-fno-builtin -nostdlib -static -fno-pie"
 $CC -S $STEM.c -o /dev/stdout | \
 	sed 's/.rodata/.text/g' >$STEM.s
