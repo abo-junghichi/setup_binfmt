@@ -16,5 +16,5 @@ See
 These scripts are tested using
 [stage3 file-trees from Gentoo Linux](https://www.gentoo.org/downloads/).
 
-Amoung ARM instruction set family, only ARMv7a is tested.
+Among ARM instruction set family, only ARMv7a is tested.
 It appears this ISA needs additionanl argument "-B 0x10000" to qemu.
